@@ -39,26 +39,32 @@ int main()
                 break;
             case 2:
                 head=insert_before_1st_node(head);
+                if(c!=0)
                 c++;
                 break;
             case 3:
                 insert_after_1st_node(head);
+                if(c!=0)
                 c++;
                 break;
             case 4:
-                insert_before_last_node(head);
+                if(c==1)
+                head=insert_before_1st_node(head);
+                else insert_before_last_node(head);
+                if(c!=0)
                 c++;
                 break;
             case 5:
                 insert_after_last_node(head);
+                if(c!=0)
                 c++;
                 break;
             case 6:
-                printf("Enter the node no.\n");
+                printf("\nEnter the node no.: ");
                 scanf("%d",&n);
                 if(n>c)
                 {
-                    printf("Not enough nodes. Write a smaller no.\n");
+                    printf("\nNot enough nodes. Write a smaller no.\n");
                     break;
                 }
                 else if(n==1)
@@ -67,32 +73,32 @@ int main()
                 c++;
                 break;
             case 7:
-                printf("Enter the node no.\n");
+                printf("\nEnter the node no.: ");
                 scanf("%d",&n);
                 if(n>c)
                 {
-                    printf("Not enough nodes. Write a smaller no.\n");
+                    printf("\nNot enough nodes. Write a smaller no.\n");
                     break;
                 }
                 else insert_after_nth_node(head, n);
                 c++;
                 break;
             case 8:
-                printf("Enter the node no.\n");
+                printf("\nEnter the node no.: ");
                 scanf("%d",&n);
-                if(n>c+1)
-                {
-                    printf("Not enough nodes. Write a smaller no.\n");
-                    break;
-                }
-                else if(n==1 && c==0)
+                if(n==1 && c==0)
                 {
                     tail=insert(tail);
                     if(head==NULL)
                     head=tail;
+                    c++;
+                }
+                else if(n>c)
+                {
+                    printf("\nNot enough nodes. Write a smaller no.\n");
+                    break;
                 }
                 else insert_at_nth_node(head, n);
-                c++;
                 break;
             case 9:
                 node_count(head);
@@ -113,7 +119,7 @@ return 0;
 sl* insert(sl *tail)
 {
     int v;
-    printf("\nEnter a value:");
+    printf("\nEnter a value: ");
     scanf("%d",&v);
     
     sl* new_node=(sl*)malloc(sizeof(sl));
@@ -210,7 +216,7 @@ void insert_before_nth_node(sl* head, int n)
             c++;
         }
         sl* p=(sl*)malloc(sizeof(sl));
-        printf("Enter a value: \n");
+        printf("\nEnter a value: ");
         scanf("%d",&c);
         p->data=c;
         p->next=head->next;
@@ -231,7 +237,7 @@ void insert_after_nth_node(sl* head, int n)
             c++;
         }
         sl* p=(sl*)malloc(sizeof(sl));
-        printf("Enter a value: \n");
+        printf("\nEnter a value: ");
         scanf("%d",&c);
         p->data=c;
         p->next=head->next;
@@ -247,7 +253,7 @@ void insert_at_nth_node(sl* head, int n)
         head=head->next;
         c++;
     }
-    printf("Enter a value: \n");
+    printf("\nEnter a value: ");
     scanf("%d",&c);
     head->data=c;
 }
@@ -256,7 +262,7 @@ void node_count(sl* head)
 {
     int c=0;
     if(head==NULL)
-    printf("List is empty");
+    printf("\nList is empty\n");
     else
     {
         while(head!=NULL)
@@ -264,8 +270,8 @@ void node_count(sl* head)
             head=head->next;
             c++;
         }
+        printf("\nNo. of nodes: %d\n",c);
     }
-    printf("\nNo. of nodes: %d\n",c);
 }
 
 void display(sl* head)
