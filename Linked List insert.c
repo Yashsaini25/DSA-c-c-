@@ -7,13 +7,14 @@ typedef struct list
     struct list* next;
 }sl;
 
-sl* insert(sl**, sl*);
+sl* insert(sl*);
 sl* insert_before_1st_node(sl*);
 void insert_after_1st_node(sl*);
-void insert_before_last_node(sl*,sl*);
-sl* insert_after_last_node(sl*);
+void insert_before_last_node(sl*);
+void insert_after_last_node(sl*);
 void insert_before_nth_node(sl*, int);
 void insert_after_nth_node(sl*, int);
+void node_count(sl*);
 void display(sl*);
 
 int main()
@@ -24,13 +25,15 @@ int main()
 
     do
     {
-        printf("\n1-Insertion\n2-Insert before 1st node\n3-Insert after 1st node\n4-Insert before last node\n5-Insert after last node\n6-Insert before nth node\n7-Insert after nth node\n8-Display\n9-Exit\n\nEnter your choice: ");
+        printf("\n1-Insertion\n2-Insert before 1st node\n3-Insert after 1st node\n4-Insert before last node\n5-Insert after last node\n6-Insert before nth node\n7-Insert after nth node\n8-Node count\n9-Display\n10-Exit\n\nEnter your choice: ");
         scanf("%d",&ch);
 
         switch(ch)
         {
             case 1:
-                tail=insert(&head,tail);
+                tail=insert(tail);
+                if(head==NULL)
+                head=tail;
                 c++;
                 break;
             case 2:
@@ -42,11 +45,11 @@ int main()
                 c++;
                 break;
             case 4:
-                insert_before_last_node(head,tail);
+                insert_before_last_node(head);
                 c++;
                 break;
             case 5:
-                tail=insert_after_last_node(tail);
+                insert_after_last_node(head);
                 c++;
                 break;
             case 6:
@@ -59,8 +62,6 @@ int main()
                 }
                 else if(n==1)
                 head=insert_before_1st_node(head);
-                else if(n==c)
-                insert_before_last_node(head, tail);
                 else insert_before_nth_node(head, n);
                 c++;
                 break;
@@ -72,25 +73,26 @@ int main()
                     printf("Not enough nodes. Write a smaller no.\n");
                     break;
                 }
-                else if(n==c)
-                tail=insert_after_last_node(tail);
                 else insert_after_nth_node(head, n);
                 c++;
                 break;
             case 8:
-                display(head);
+                node_count(head);
                 break;
             case 9:
+                display(head);
+                break;
+            case 10:
                 return 0;
             default:
                 printf("\nInvalid choice\n");
         }
-    }while(ch!=9);
+    }while(ch!=10);
     
 return 0;
 }
 
-sl* insert(sl** head, sl *tail)
+sl* insert(sl *tail)
 {
     int v;
     printf("\nEnter a value:");
@@ -100,17 +102,9 @@ sl* insert(sl** head, sl *tail)
     new_node->data=v;
     new_node->next=NULL;
 
-    if(*head==NULL)
-    {
-        tail=new_node;
-        *head=new_node;
-    }
-
-    else
-    {
-        tail->next=new_node;
-        tail=new_node;
-    }
+    if(tail!=NULL)
+    tail->next=new_node;
+    tail=new_node;
 
     return tail;
 }
@@ -148,7 +142,7 @@ void insert_after_1st_node(sl* head)
     }
 }
 
-void insert_before_last_node(sl* head,sl* tail)
+void insert_before_last_node(sl* head)
 {
     if(head==NULL)
     printf("\nList is empty\n");
@@ -159,16 +153,16 @@ void insert_before_last_node(sl* head,sl* tail)
         scanf("%d",&v);
         sl* p=(sl*)malloc(sizeof(sl));
         p->data=v;
-        while(head->next!=tail)
+        while(head->next->next!=NULL)
         head=head->next;
-        p->next=tail;
+        p->next=head->next;
         head->next=p;
     }
 }
 
-sl* insert_after_last_node(sl* tail)
+void insert_after_last_node(sl* head)
 {
-    if(tail==NULL)
+    if(head==NULL)
     printf("\nList is empty\n");
     else
     {
@@ -177,11 +171,11 @@ sl* insert_after_last_node(sl* tail)
         scanf("%d",&v);
         sl* p=(sl*)malloc(sizeof(sl));
         p->data=v;
-        tail->next=p;
-        tail=p;
+        while(head->next!=NULL)
+        head=head->next;
+        head->next=p;
         p->next=NULL;
     }
-    return tail;
 }
 
 
@@ -225,6 +219,22 @@ void insert_after_nth_node(sl* head, int n)
         p->next=head->next;
         head->next=p;
     }
+}
+
+void node_count(sl* head)
+{
+    int c=0;
+    if(head==NULL)
+    printf("List is empty");
+    else
+    {
+        while(head!=NULL)
+        {
+            head=head->next;
+            c++;
+        }
+    }
+    printf("\nNo. of nodes: %d\n",c);
 }
 
 void display(sl* head)
