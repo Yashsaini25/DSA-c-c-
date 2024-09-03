@@ -14,6 +14,7 @@ void insert_before_last_node(sl*);
 void insert_after_last_node(sl*);
 void insert_before_nth_node(sl*, int);
 void insert_after_nth_node(sl*, int);
+void insert_at_nth_node(sl*, int);
 void node_count(sl*);
 void display(sl*);
 
@@ -25,7 +26,7 @@ int main()
 
     do
     {
-        printf("\n1-Insertion\n2-Insert before 1st node\n3-Insert after 1st node\n4-Insert before last node\n5-Insert after last node\n6-Insert before nth node\n7-Insert after nth node\n8-Node count\n9-Display\n10-Exit\n\nEnter your choice: ");
+        printf("\n1-Insertion\n2-Insert before 1st node\n3-Insert after 1st node\n4-Insert before last node\n5-Insert after last node\n6-Insert before nth node\n7-Insert after nth node\n8-Insert at nth node\n9-Node count\n10-Display\n11-Exit\n\nEnter your choice: ");
         scanf("%d",&ch);
 
         switch(ch)
@@ -77,17 +78,34 @@ int main()
                 c++;
                 break;
             case 8:
-                node_count(head);
+                printf("Enter the node no.\n");
+                scanf("%d",&n);
+                if(n>c+1)
+                {
+                    printf("Not enough nodes. Write a smaller no.\n");
+                    break;
+                }
+                else if(n==1 && c==0)
+                {
+                    tail=insert(tail);
+                    if(head==NULL)
+                    head=tail;
+                }
+                else insert_at_nth_node(head, n);
+                c++;
                 break;
             case 9:
-                display(head);
+                node_count(head);
                 break;
             case 10:
+                display(head);
+                break;
+            case 11:
                 return 0;
             default:
                 printf("\nInvalid choice\n");
         }
-    }while(ch!=10);
+    }while(ch!=11);
     
 return 0;
 }
@@ -219,6 +237,19 @@ void insert_after_nth_node(sl* head, int n)
         p->next=head->next;
         head->next=p;
     }
+}
+
+void insert_at_nth_node(sl* head, int n)
+{
+    int c=1;
+    while(c!=n)
+    {
+        head=head->next;
+        c++;
+    }
+    printf("Enter a value: \n");
+    scanf("%d",&c);
+    head->data=c;
 }
 
 void node_count(sl* head)
