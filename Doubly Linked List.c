@@ -8,7 +8,7 @@ typedef struct list
     struct list* next;
 }dl;
 
-dl* insert(dl*);
+dl* create(dl*);
 void node_count(dl*);
 void display(dl*);
 void display_reverse(dl*);
@@ -20,13 +20,13 @@ int main()
 
     do
     {
-        printf("\n1-Insertion\n2-Node count\n3-Display\n4-Display reverse\n5-Exit\n\nEnter your choice: ");
+        printf("\n1-Create\n2-Node count\n3-Display\n4-Display reverse\n5-Exit\n\nEnter your choice: ");
         scanf("%d",&ch);
 
         switch(ch)
         {
             case 1:
-                head=insert(head);
+                head=create(head);
                 break;
             case 2:
                 node_count(head);
@@ -48,7 +48,7 @@ return 0;
 }
 
 
-dl* insert(dl *head)
+dl* create(dl *head)
 {
     int v;
     printf("\nEnter a value: ");
@@ -57,14 +57,24 @@ dl* insert(dl *head)
     dl* new_node=(dl*)malloc(sizeof(dl));
     new_node->data=v;
 
-    if(head!=NULL)
-    head->next=new_node;
-
-    new_node->prev=head;
     new_node->next=NULL;
-    head=new_node;
+    new_node->prev=NULL;
 
-    return head;
+    if(head==NULL)
+    return new_node;
+
+    else
+    {
+        dl* temp=head;
+
+        while(temp->next!=NULL)
+        temp=temp->next;
+
+        new_node->prev=temp;
+        temp->next=new_node;
+
+        return head;
+    } 
 }
 
 
@@ -79,7 +89,7 @@ void node_count(dl* head)
     {
         while(head!=NULL)
         {
-            head=head->prev;
+            head=head->next;
             c++;
         }
         printf("\nNo. of nodes: %d\n",c);
@@ -94,9 +104,6 @@ void display(dl* head)
 
     else
     {
-        while(head->prev!=NULL)
-        head=head->prev;
-
         while(head!=NULL)
         {
             printf("\nValue: %d",head->data);
@@ -114,6 +121,9 @@ void display_reverse(dl* head)
 
     else
     {
+        while(head->next!=NULL)
+        head=head->next;
+
         while(head!=NULL)
         {
             printf("\nValue: %d",head->data);
