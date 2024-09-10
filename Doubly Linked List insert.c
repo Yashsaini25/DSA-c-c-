@@ -15,6 +15,7 @@ void display_reverse(dl*);
 void insert_at_begn(dl**);
 void insert_at_end(dl**);
 void insert_at_nth_position(dl*, int);
+void free_list(dl**);
 
 int main()
 {
@@ -73,6 +74,7 @@ int main()
                 c++;
                 break;
             case 8:
+                free_list(&head);
                 return 0;
             default:
                 printf("\nInvalid choice\n");
@@ -90,8 +92,14 @@ void create(dl **head, dl** tail)
     scanf("%d",&v);
     
     dl* new_node=(dl*)malloc(sizeof(dl));
-    new_node->data=v;
 
+    if(!new_node)
+    {
+        printf("\nMemory allocation failed.\n");
+        return;
+    }
+
+    new_node->data=v;
     new_node->prev=*tail;
     new_node->next=NULL;
 
@@ -172,10 +180,17 @@ void insert_at_begn(dl **head)
         scanf("%d",&v);
     
         dl* new_node=(dl*)malloc(sizeof(dl));
-        new_node->data=v;
 
+        if(!new_node)
+        {
+            printf("\nMemory allocation failed.\n");
+            return;
+        }
+
+        new_node->data=v;
         new_node->prev=NULL;
         new_node->next=*head;
+
         (*head)->prev=new_node;
         *head=new_node;   
     } 
@@ -194,10 +209,17 @@ void insert_at_end(dl **tail)
         scanf("%d",&v);
     
         dl* new_node=(dl*)malloc(sizeof(dl));
-        new_node->data=v;
+        
+        if(!new_node)
+        {
+            printf("\nMemory allocation failed.\n");
+            return;
+        }
 
+        new_node->data=v;
         new_node->prev=*tail;
         new_node->next=NULL;
+
         (*tail)->next=new_node;
         *tail=new_node;
     } 
@@ -216,6 +238,13 @@ void insert_at_nth_position(dl *head, int n)
         scanf("%d",&v);
     
         dl* new_node=(dl*)malloc(sizeof(dl));
+
+        if(!new_node)
+        {
+            printf("\nMemory allocation failed.\n");
+            return;
+        }
+
         new_node->data=v;
 
         while(c!=n)
@@ -226,7 +255,20 @@ void insert_at_nth_position(dl *head, int n)
 
         new_node->prev=head;
         new_node->next=head->next;
+
         head->next->prev=new_node;  
         head->next=new_node;
     }
+}
+
+
+void free_list(dl** head)
+{
+    while(*head!=NULL)
+    {
+        dl* p=*head;
+        *head=(*head)->next;
+        free(p);
+    }
+    *head=NULL;
 }
