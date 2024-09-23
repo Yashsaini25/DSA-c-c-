@@ -7,14 +7,15 @@ typedef struct binary_search_tree
  struct binary_search_tree *left, *right;
 }bst;
 
-void insert(bst**);
+bst* get_new_node(int);
+bst* insert(bst*,int);
 void preorder(bst*);
 void inorder(bst*);
 void postorder(bst*);
 
 int main()
 {
-  int ch;
+  int ch,v;
   bst* root=NULL;
 
   do
@@ -24,7 +25,9 @@ int main()
     switch(ch)
     {
         case 1:
-            insert(&root);
+            printf("\nEnter a value to insert: ");
+            scanf("%d",&v);
+            root=insert(root,v);
             break;
         case 2:
             preorder(root);
@@ -49,51 +52,32 @@ return 0;
 }
 
 
-void insert(bst** root)
+bst* get_new_node(int v)
 {
-    int v;
-
     bst* new_node=(bst*)malloc(sizeof(bst));
-    if(!new_node)
-    {
-        printf("\nMemory allocation failed\n");
-        return;
-    }
+
+    new_node->data=v;
+    new_node->left=NULL;
+    new_node->right=NULL;
+
+    return new_node;
+}
+
+
+bst* insert(bst* root, int v)
+{
+    if(root==NULL)
+    return get_new_node(v);
 
     else
     {
-        printf("\nEnter a value to insert: ");
-        scanf("%d",&v);
-        new_node->data=v;
+        if(v < (root)->data)
+        root->left=insert(root->left,v);
 
-        if(*root==NULL)
-        *root=new_node;
-
-        else
-        {
-            bst* temp=*root;
-            bst* parent=NULL;
-
-            while(temp!=NULL)
-            {
-                parent=temp;
-
-                if(v < temp->data)
-                temp=temp->left;
-
-                else if(v > temp->data)
-                temp=temp->right;
-            }
-
-            if(v < parent->data)
-            parent->left = new_node;
-        
-            if(v > parent->data)
-            parent->right = new_node;
-        }
-        new_node->left=NULL;
-        new_node->right=NULL;
+        else if(v > (root)->data)
+        root->right=insert(root->right,v);
     }   
+    return root;
 }
     
 
