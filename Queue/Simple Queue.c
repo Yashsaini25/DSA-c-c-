@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void enqueue(int[], int*, int);
+void enqueue(int[], int*, int*, int);
 void dequeue(int[], int*, int*);
 void display(int[], int, int);
 void reverse_display(int[], int, int);
@@ -27,9 +27,7 @@ int main()
         switch(ch)
         {
             case 1:
-                enqueue(queue,&r,n);
-                if(f==-1)
-                f=r;
+                enqueue(queue,&f,&r,n);
                 break;
             case 2:
                 dequeue(queue,&f,&r);
@@ -50,7 +48,7 @@ int main()
 }
 
 
-void enqueue(int queue[], int *r, int n)
+void enqueue(int queue[], int*f, int *r, int n)
 {
     if(*r==n-1)
     {
@@ -62,6 +60,9 @@ void enqueue(int queue[], int *r, int n)
     printf("\nEnter a value to be enqueued: ");
     scanf("%d",&v);
 
+    if(*f==-1)
+    *f=0;
+    
     (*r)++;
     queue[*r]=v;
 }
@@ -114,5 +115,3 @@ void reverse_display(int queue[], int f, int r)
     }
     printf("\n");
 }
-
-
